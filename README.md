@@ -1,16 +1,21 @@
-## Hi there 👋
+Hi there, nice to meet you! 🐧️
 
-<!--
-**Tobilee10/Tobilee10** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Hello, my name is Oluwatobiloba Reuben, Junior Cloud Engineer (Intenship / Entry-Level) 👨‍💻
+Passionate about cloud infrastruction, automation, and learning Cloud best practices through hands-on projects.
 
-Here are some ideas to get you started:
+I'm focused on building real-world AWS environments, automating infrastructute with Terraform, and developing strong Linux and Git workflows to suppport reliable cloud system. 
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+
+
+<h1 align="center">Hi 👋, I'm Reuben</h1>
+<h3 align="center">A passionate Cloud Engineer from Nigeria</h3>
+
+- 🌱 I’m currently learning **GitHub Action (CI/CD pipelines)**
+
+- 👯 I’m looking to collaborate on **Cloud Native projects**
+
+- 🤝 I’m looking for help with **DevOps**
+
+
+
+
