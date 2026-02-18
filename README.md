@@ -71,8 +71,6 @@ Currently building hands-on projects in Linux, DevOps, and Cloud Engineering.
 ---
 
 ## Let's Connect
-- LinkedIn: 
-- Email:
 
 ---
 
