@@ -33,7 +33,7 @@ Currently building hands-on projects in Linux, DevOps, and Cloud Engineering.
 - Git & GitHub
 - GitHub Actions
 - Bash Scripting
-  
+- Jenkins  
 ### Configuration & Services
 - Apache (httpd)
 - Nginx
@@ -50,7 +50,7 @@ Currently building hands-on projects in Linux, DevOps, and Cloud Engineering.
 - [x] Automated user provisioning and permission control using bash scripting.
 
 ### Apache Web Server Deployment
-- [x] Configured Apache Virtual hosts ad SSL on centOS with proper documentation.
+- [x] Configured Apache Virtual hosts and SSL on centOS with proper documentation.
 
 ### 30-Day Linux System Adminstration Challenge
 - [x] Hands-on Linux asministration tasks documented daily
@@ -67,7 +67,7 @@ Currently building hands-on projects in Linux, DevOps, and Cloud Engineering.
 - Infrastructure as Code
 - Kubernetes
 - CI/CD pipeline automation
-
+-
 ---
 
 ## Let's Connect
