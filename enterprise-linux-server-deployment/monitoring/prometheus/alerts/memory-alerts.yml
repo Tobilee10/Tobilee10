@@ -1,0 +1,12 @@
+groups: 
+  - name: memory-alerts
+    rules:
+      - alert: HighMemoryUtilization
+        expr: |
+          100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Memory utilization detected"
+          description: "Memory utilization is above 85% for more than 5 minutes on instance {{ $labels.instance }}."

@@ -1,0 +1,20 @@
+---
+# Enterprise Linux Server - Script Configuration
+enterprise_scripts_install_dir: /usr/local/sbin
+
+enterprise_backup_dir: /var/backups/enterprise-linux-server
+
+enterprise_log_dir: /var/log/enterprise-linux-server
+
+enterprise_backup_retention_days: 7
+
+# 0 2 * * *
+enterprise_backup_hour: "2"
+
+enterprise_backup_minute: "0"
+
+enterprise_disk_monitor_minute: "*/15"
+
+enterprise_disk_threshold: 80
+
+enterprise_monitoring_group: monitoring

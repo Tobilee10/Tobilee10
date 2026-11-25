@@ -1,0 +1,33 @@
+---
+- name: Ensure administrative group exists
+  ansible.builtin.group:
+    name: "{{ admin_group }}"
+    state: present
+
+- name: Ensure administrative user exists
+  ansible.builtin.user:
+    name: "{{ admin_user }}"
+    groups: "{{ admin_group }}"
+    append: true
+    shell: "{{ admin_shell }}"
+    create_home: true
+    state: present
+
+- name: Set correct ownership and permissions for user's SSH directory
+  ansible.builtin.file:
+    path: "/home/{{ admin_user }}/.ssh"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: "700"
+    state: directory
+  when: admin_user is defined 
+
+
+- name: Set correct ownership and permissions for user's authorized_keys file
+  ansible.builtin.file:
+    path: "/home/{{ admin_user }}/.ssh/authorized_keys"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    mode: "600"
+    state: file
+  when: admin_user is defined 

@@ -1,0 +1,100 @@
+---
+- name: Install cron package
+  ansible.builtin.apt:
+    name: cron
+    state: present
+    update_cache: true
+
+- name: Ensure cron service is running and enabled
+  ansible.builtin.service:
+    name: cron
+    state: started
+    enabled: true
+
+- name: Create backup directory
+  ansible.builtin.file:
+    path: "{{ enterprise_backup_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Create log directory
+  ansible.builtin.file:
+    path: "{{ enterprise_log_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Create monitoring group
+  ansible.builtin.group:
+    name: "{{ enterprise_monitoring_group }}"
+    state: present
+
+- name: Add sysadmin to monitoring group
+  ansible.builtin.user:
+    name: sysadmin
+    groups: "{{ enterprise_monitoring_group }}"
+    append: true
+
+- name: Set log directory ownership and permissions
+  ansible.builtin.file:
+    path: "{{ enterprise_log_dir }}"
+    owner: root
+    group: "{{ enterprise_monitoring_group }}"
+    mode: "2750"
+
+- name: Deploy backup script
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../scripts/backup.sh"
+    dest: "{{ enterprise_scripts_install_dir }}/backup.sh"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy disk monitoring script
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../scripts/disk-monitor.sh"
+    dest: "{{ enterprise_scripts_install_dir }}/disk-monitor.sh"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy system health script
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../scripts/system-health-check.sh"
+    dest: "{{ enterprise_scripts_install_dir }}/system-health.sh"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Deploy user management script
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../scripts/user-management.sh"
+    dest: "{{ enterprise_scripts_install_dir }}/user-management.sh"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Schedule daily backup
+  ansible.builtin.cron:
+    name: "Enterprise Linux Server daily backup"
+    user: root
+    minute: "{{ enterprise_backup_minute }}"
+    hour: "{{ enterprise_backup_hour }}"
+    job: >-
+      unmask 0027
+      BACKUP-DIR={{ enterprise_backup_dir }}
+      RETENTION_DAYS={{ enterprise_backup_retention_days }}
+      {{ enterprise_scripts_install_dir }}/backup.sh >> {{ enterprise_log_dir }}/backup.log 2>&1
+
+- name: Schedule monitoring every 15 minutes
+  ansible.builtin.cron:
+    name: "Enterprise Linux Server disk monitoring"
+    user: root
+    minute: "{{ enterprise_disk_monitor_minute }}"
+    job: >-
+      unmask 0027
+      THRESHOLD={{ enterprise_disk_threshold }}
+      {{ enterprise_scripts_install_dir }}/disk-monitor.sh >> {{ enterprise_log_dir }}/disk-monitor.log 2>&1

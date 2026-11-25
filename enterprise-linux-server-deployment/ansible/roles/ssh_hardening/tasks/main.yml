@@ -1,0 +1,13 @@
+---
+- name: Deploy SSH hardening configuration
+  ansible.builtin.template:
+    src: sshd-hardening.conf.j2
+    dest: /etc/ssh/sshd_config.d/00-ansible_hardening.conf
+    owner: root
+    group: root
+    mode: '0600'
+    validate: "/usr/sbin/sshd -t -f %s"
+    # -t: Stands for "test mode." It tells sshd to check the validity of the configuration file and keys without actually starting the SSH service.
+    # -f %s: The -f flag tells sshd which configuration file to read. Ansible automatically replaces %s with the path to the temporary file it just created.
+  notify:
+    - Restart SSH service

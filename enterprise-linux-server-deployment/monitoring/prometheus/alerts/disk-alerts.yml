@@ -1,0 +1,16 @@
+groups:
+  - name: disk-alerts
+    rules:
+      - alert: HighDiskUtilization
+        expr: |
+          100 * (1 - 
+          node_filesytem_avail_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} 
+          /
+          node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"}
+          ) > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Disk utilization detected"
+          description: "Disk utilization on {{ $labels.instance }} at mountpoint {{ $labels.mountpoint }} has remained above 80% for more than 5 minutes."

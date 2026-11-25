@@ -1,0 +1,7 @@
+---
+- name: Configure Linux package management
+  hosts: linux_servers
+  become: true
+  
+  roles:
+    - package_management

@@ -1,0 +1,7 @@
+---
+- name: Manage system services
+  ansible.builtin.service:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ managed_services }}"

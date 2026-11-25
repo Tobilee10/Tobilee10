@@ -1,0 +1,12 @@
+---
+- name: Enterprise Linux Server deployment
+  hosts: linux_servers
+  become: true
+  gather_facts: true
+  roles:
+    - package_management
+    - user_management
+    - ssh_hardening
+    - nginx
+    - service_management
+    - enterprise_scripts

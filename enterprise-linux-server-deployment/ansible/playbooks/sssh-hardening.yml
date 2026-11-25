@@ -1,0 +1,7 @@
+---
+- name: Harden SSH configuration on Linux servers
+  hosts: linux_servers
+  become: true
+  
+  roles:
+    - ssh_hardening

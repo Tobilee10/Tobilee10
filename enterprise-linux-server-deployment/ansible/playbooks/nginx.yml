@@ -1,0 +1,7 @@
+---
+- name: Install and configure Nginx
+  hosts: linux_servers
+  become: true
+  
+  roles:
+    - nginx

@@ -1,0 +1,16 @@
+---
+- name: Update APT package cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: "{{ package_cache_valid_time }}"
+  
+- name: Upgrade installed packages
+  ansible.builtin.apt:
+    upgrade: safe
+
+- name: Install system packages
+  ansible.builtin.apt:
+    name: "{{ system_packages }}"
+    state: present
+  when: system_packages is defined and system_packages | length > 0
+  

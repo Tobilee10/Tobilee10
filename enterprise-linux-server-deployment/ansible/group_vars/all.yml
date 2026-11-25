@@ -1,0 +1,52 @@
+---
+
+# Operating system
+target_os: Ubuntu
+
+# Package management
+system_packages:
+  - git
+  - curl
+  - wget
+  - vim
+  - htop
+  - net-tools
+  - unzip
+  - tar
+  # - ufw
+  - fail2ban
+  - tree
+
+# User Management
+
+admin_user: sysadmin
+admin_group: sudo
+admin_shell: /bin/bash
+
+# SSH_hardening
+ssh_port: 22
+ssh_permit_root_login: "no"
+ssh_password_authentication: "no"
+ssh_pubkey_authentication: "yes"
+ssh_max_auth_tries: 3
+ssh_allow_users:
+  - sysadmin
+  - ubuntu
+
+# Nginx
+nginx_package: nginx
+nginx_service: nginx
+
+# Sevice Management
+managed_services:
+  - name: ssh
+    enabled: true
+    state: started
+
+  - name: nginx
+    enabled: true
+    state: started
+
+  - name: fail2ban
+    enabled: true
+    state: started

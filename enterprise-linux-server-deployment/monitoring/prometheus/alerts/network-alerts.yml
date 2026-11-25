@@ -1,0 +1,29 @@
+groups:
+  - name: network-alerts
+    rules:
+      - alert: HighNetworkReceive
+        expr: |
+          sum by(instance) (
+          rate(node_network_receive_bytes_total{device!="lo"}[5m])
+          ) > 10485760
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Incoming Network"
+          description: "Incoming network traffic on {{ $labels.instance }} has exceeded 10 MiB/s for more than 5 minutes." 
+
+      - alert: HighNetworkTransmit
+        expr: | 
+          
+          sum by(instance) (
+          rate(node_network_transmit_bytes_total{device!="lo"}[5m])
+          ) > 10485760
+        
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High outgoing network traffic"
+          description: "Outgoing network traffic on {{ $labels.instance }} has exceeded 10 MiB/s for more than 5 minutes"
+        

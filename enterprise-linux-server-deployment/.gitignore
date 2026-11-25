@@ -1,0 +1,15 @@
+ansible-example/*
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Grafana credentials
+monitoring/grafana/.env
+
+# Alertmanager SMTP secrets
+monitoring/alertmanager/secrets/
+
+# Backup configuration
+monitoring/prometheus/prometheus.yml.backup

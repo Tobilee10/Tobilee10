@@ -1,0 +1,21 @@
+groups:
+  - name: prometheus-self-monitoring
+    rules:
+
+      - alert: PrometheusTargetDown
+        expr: up{job="prometheus"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Prometheus target is down"
+          description: "prometheus cannot scrape its own metrics endpoint."
+
+      - alert: PrometheusScrapeFailures
+        expr: increase(prometheus_target_scrapes_exceeded_sample_limit_total[5m]) > 0
+        for: 2m
+        labels: 
+          severity: warning
+        annotations: 
+          summary: "Prometheus scrape sample limit exceeded"
+          description: "Prometheus has exceeded a configured scrape sample limit."
