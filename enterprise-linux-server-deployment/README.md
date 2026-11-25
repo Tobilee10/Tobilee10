@@ -1,26 +1,50 @@
-# Enterprise Linux Server Deployment & Hardening (AWS EC2)
+# Enterprise Linux Server Deployment, Hardening & Monitoring
 
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-EC2-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?style=for-the-badge&logo=ansible&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-Web_Server-009639?style=for-the-badge&logo=nginx&logoColor=white)
-![Status](https://img.shields.io/badge/Status-In_Progress-yellow?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-Visualization-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+![Status](https://img.shields.io/badge/Project-In_Progress-yellow?style=for-the-badge)
 
-## Project Overview
+## 1. Project Overview
 
-This repository documents the end-to-end deployment, security hardening, automated management, and monitoring of an enterprise Ubuntu Server instance on AWS EC2. 
+The Enterprise Linux Server Deployment project demonstrates the deployment, administration, security hardening, automation, and monitoring of an Ubuntu Linux server hosted on Amazon Web Services (AWS).
 
-Designed around real-world Linux System Administration and DevOps practices, this project eliminates manual configuration drift by leveraging declarative configuration management with **Ansible**, automated administrative workflows via **Bash**, network perimeter isolation using **UFW**, and kernel/SSH hardening.
+The project applies practical Linux System Administration and DevOps engineering practices to establish a manageable and observable server environment.
 
-## Problem Statement
+It combines:
+
+- AWS EC2 infrastructure.
+- Ubuntu Linux server administration.
+- SSH security and access management.
+- Linux firewall configuration.
+- Bash administrative automation.
+- Ansible configuration management.
+- Docker-based monitoring infrastructure.
+- Prometheus metrics collection.
+- Grafana dashboards and visualization.
+- Alertmanager email notifications.
+
+The objective is to demonstrate how a Linux server can be deployed, secured, automated, monitored, and maintained using practical operational workflows.
+
+## 2. Problem Statement
 
 Organizations depend on Linux servers to host applications, manage services, store data, and support business operations.
 
-Poor server configuration, weak access controls, inadequate monitoring, manual administration, and insufficient backup procedures can lead to security vulnerabilities, service interruptions, and operational inefficiencies.
+Poor server configuration, weak access controls, inadequate monitoring, manual administration, and insufficient backup procedures can result in:
 
-This project addresses these challenges by implementing a structured approach to Linux server deployment, security, automation, monitoring, and maintenance.
+- Security vulnerabilities.
+- Service interruptions.
+- Resource exhaustion.
+- Configuration drift.
+- Operational inefficiencies.
+- Difficult troubleshooting and incident investigation.
 
-## Project Objectives
+This project addresses these challenges through structured Linux administration, security hardening, automation, infrastructure monitoring, and operational documentation.
+
+## 3. Project Objectives
 
 - Deploy and configure an Ubuntu Linux server on AWS EC2.
 - Implement secure SSH access and Linux user management.
@@ -28,95 +52,266 @@ This project addresses these challenges by implementing a structured approach to
 - Automate administrative tasks using Bash.
 - Manage server configurations using Ansible.
 - Deploy and manage services using Nginx and systemd.
-- Implement server monitoring and alerting.
-- Document troubleshooting, backup, and incident response procedures.
+- Implement infrastructure monitoring and alerting.
+- Visualize server performance using Grafana.
+- Configure automated email notifications through Alertmanager.
+- Document deployment, troubleshooting, backup, and incident response procedures.
 
-## Technology Stack
+## 4. Technology Stack
 
-- Operating System: Ubuntu Server 24.04 LTS
-- Cloud Platform: Amazon Web Services (AWS)
-- Compute: Amazon EC2
-- Storage: Amazon EBS
-- Automation: Ansible
-- Scripting: Bash
-- Web Server: Nginx
-- Monitoring: Prometheus and Grafana (planned)
-- Version Control: Git and GitHub
-  
+| Category | Technologies |
+| :--- | :--- |
+| Cloud Platform | Amazon Web Services |
+| Compute | AWS EC2 |
+| Operating System | Ubuntu Server 24.04 LTS |
+| Storage | Amazon EBS |
+| Configuration Management | Ansible |
+| Scripting | Bash |
+| Web Server | Nginx |
+| Containerization | Docker, Docker Compose |
+| Metrics Collection | Prometheus |
+| Metrics Exporter | Node Exporter |
+| Visualization | Grafana |
+| Alert Management | Alertmanager |
+| Notifications | Gmail SMTP |
+| Version Control | Git, GitHub |
 
-## Architecture Overview
+## 5. Architecture Overview
 
-The project uses a local Linux workstation as the administration controller and an AWS EC2 Ubuntu server as the managed Linux environment.
+The project uses a local Linux workstation as the administration and monitoring environment and an AWS EC2 Ubuntu server as the managed Linux environment.
 
-The local workstation will be used for:
+### 5.1 Administration and Monitoring Workstation
+
+The local workstation provides:
 
 - Git version control.
 - Ansible automation.
 - SSH administration.
-- Project documentation. 
+- Bash scripting and development.
+- Docker and Docker Compose.
+- Prometheus metrics collection.
+- Grafana dashboards.
+- Alertmanager notification management.
 
+### 5.2 AWS EC2 Managed Server
 
-The AWS EC2 instance will host the Linux services, administrative scripts, and monitoring components. 
+The AWS EC2 instance provides:
+
+- Ubuntu Server 24.04 LTS.
+- Linux user and permission management.
+- SSH access and security hardening.
+- UFW firewall configuration.
+- Nginx web server.
+- systemd service management.
+- Administrative scripts.
+- Node Exporter infrastructure metrics.
+
+### 5.3 Monitoring Architecture
+
+The monitoring infrastructure uses a distributed architecture.
+
+```text
+              LOCAL LINUX WORKSTATION
+       +-----------------------------------+
+       |                                   |
+       |          Docker Compose           |
+       |                                   |
+       |  +-------------+                  |
+       |  | Prometheus  |<----------+      |
+       |  +------+------+           |      |
+       |         |                  |      |
+       |         |                  |      |
+       |         v                  |      |
+       |  +-------------+           |      |
+       |  |  Grafana    |           |      |
+       |  +-------------+           |      |
+       |                            |      |
+       |  +-------------+           |      |
+       |  | Alertmanager|           |      |
+       |  +------+------+           |      |
+       +---------|------------------|------+
+                 |                  |
+                 | SMTP             | TCP 9100
+                 v                  |
+           Gmail SMTP               |
+                                    |
+                                    v
+                         +----------------------+
+                         | AWS EC2 Ubuntu Server|
+                         |                      |
+                         |  Node Exporter       |
+                         |  Port 9100           |
+                         |                      |
+                         |  Linux Metrics       |
+                         |  CPU                 |
+                         |  Memory              |
+                         |  Disk                |
+                         |  Network             |
+                         |  Uptime              |
+                         +----------------------+
 ```
-+----------------------------------+          SSH (Port 22) / Ansible
-|     Administration Controller    | ------------------------------------+
-|  - Ubuntu Workstation            |                                     |
-|  - Git / Ansible / Bash Scripts  |                                     v
-+----------------------------------+                   +----------------------------------+
-|           AWS EC2 Node           |
-|  - Ubuntu 24.04 LTS (t3.micro)   |
-|  - Security Hardened (sshd/ufw)  |
-|  - Nginx Reverse Proxy           |
-|  - EBS Storage / Automated Backup|
-+----------------------------------+
-```
 
+### 5.4 Monitoring Data Flow
 
-## Repository Structure
+1. Node Exporter runs as a systemd service on the AWS EC2 server.
+2. Node Exporter exposes Linux system metrics on TCP port 9100.
+3. Prometheus scrapes the metrics from the EC2 server.
+4. Prometheus stores and evaluates the collected metrics.
+5. Grafana queries Prometheus and displays monitoring dashboards.
+6. Prometheus sends firing alerts to Alertmanager.
+7. Alertmanager routes notifications through Gmail SMTP.
 
-```
+Important architecture note: Prometheus, Grafana, and Alertmanager currently run on the local workstation. The workstation must remain powered on and connected for continuous monitoring and email notifications.
+
+## 6. Implemented Features
+
+### 6.1 Linux Server Administration
+
+The project includes practical Linux administration activities such as:
+
+- System information and resource inspection.
+- Linux user and group management.
+- File and directory permissions.
+- SSH administration.
+- Service management with systemd.
+- Disk and storage management.
+- System logging and log rotation.
+
+### 6.2 Security Hardening
+
+Security controls include:
+
+- SSH access hardening.
+- Dedicated service accounts.
+- Linux permissions and access controls.
+- UFW firewall configuration.
+- systemd service restrictions.
+- Restricted network access to monitoring services.
+- Sensitive credential exclusion from Git.
+
+### 6.3 Bash Automation
+
+Administrative scripts support routine server management.
+
+The project includes scripts for:
+
+- System health checks.
+- Disk monitoring.
+- Automated backups.
+- User management.
+
+### 6.4 Ansible Automation
+
+Ansible is used to manage server configuration and automate administrative operations.
+
+The project includes:
+
+- Ansible inventory.
+- Playbooks.
+- Roles.
+- Group variables.
+- Remote server configuration management.
+
+### 6.5 Infrastructure Monitoring
+
+The monitoring implementation includes:
+
+| Component | Function |
+| :--- | :--- |
+| Node Exporter | Exposes Linux host metrics |
+| Prometheus | Collects and stores metrics |
+| Grafana | Visualizes server performance |
+| Alertmanager | Routes and manages alerts |
+| Gmail SMTP | Delivers email notifications |
+| Docker Compose | Manages monitoring containers |
+
+The monitoring dashboard covers:
+
+- CPU utilization.
+- Memory utilization.
+- Disk utilization.
+- Available disk space.
+- Network receive and transmit traffic.
+- Server uptime.
+
+The alerting implementation includes resource utilization, network traffic, and monitoring-target availability conditions.
+
+## 7. Repository Structure
+
+```text
 enterprise-linux-server-deployment/
+│
 ├── README.md
+│
 ├── docs/
-│ ├── problem-statement.md
-│ ├── architecture.md
-│ ├── server-assessment.md
-│ ├── deployment-guide.md
-│ ├── security-hardening.md
-│ ├── troubleshooting.md
-│ ├── incident-response.md
-│ └── decommissioning-guide.md
+│   ├── problem-statement.md
+│   ├── architecture.md
+│   ├── server-assessment.md
+│   ├── deployment-guide.md
+│   ├── security-hardening.md
+│   ├── troubleshooting.md
+│   ├── incident-response.md
+│   ├── decommissioning-guide.md
+│   │
+│   └── monitoring/
+│       ├── README.md
+│       ├── architecture.md
+│       ├── deployment-guide.md
+│       ├── troubleshooting.md
+│       ├── prometheus-configuration.md
+│       ├── grafana-dashboard.md
+│       ├── alerting-and-notifications.md
+│       └── security.md
+│
 ├── scripts/
-│ ├── system-health-check.sh
-│ ├── disk-monitor.sh
-│ ├── backup.sh
-│ └── user-management.sh
+│   ├── system-health-check.sh
+│   ├── disk-monitor.sh
+│   ├── backup.sh
+│   └── user-management.sh
+│
 ├── ansible/
-│ ├── inventory/
-│ ├── playbooks/
-│ ├── roles/
-│ └── group_vars/
+│   ├── inventory/
+│   ├── playbooks/
+│   ├── roles/
+│   └── group_vars/
+│
 ├── monitoring/
-│ ├── prometheus/
-│ └── grafana/
+│   ├── docker-compose.yml
+│   ├── prometheus/
+│   │   ├── prometheus.yml
+│   │   └── alerts/
+│   │       ├── availability-alerts.yml
+│   │       ├── cpu-alerts.yml
+│   │       ├── disk-alerts.yml
+│   │       ├── memory-alerts.yml
+│   │       ├── network-alerts.yml
+│   │       └── prometheus-alerts.yml
+│   │
+│   ├── alertmanager/
+│   │   ├── alertmanager.yml
+│   │   └── secrets/
+│   │
+│   └── grafana/
+│       └── .env
+│
 ├── security/
-│ └── ssh-hardening.conf.example
+│   └── ssh-hardening.conf.example
+│
 └── screenshots/
 ```
 
-## Prerequisites
+Sensitive files and credentials are excluded from version control.
 
-The following tools and resources are required before installation:
+## 8. Prerequisites
 
 ### Infrastructure Requirements
 
-- An AWS account with sufficient available credits or an approved budget.
-- An AWS EC2 instance running Ubuntu Server 24.04 LTS.
-- An appropriate EC2 instance type and storage capacity.
-- An SSH key pair for secure server access.
-- A security group with appropriately restricted inbound access.
-- A local Linux workstation for administration. 
-
+- AWS account with an approved budget.
+- AWS EC2 Ubuntu Server 24.04 LTS.
+- Appropriate EC2 instance type and storage.
+- SSH key pair.
+- Security group with restricted inbound access.
+- Local Linux administration workstation.
 
 ### Software Requirements
 
@@ -125,220 +320,140 @@ The following tools and resources are required before installation:
 - Bash.
 - Python 3.
 - Ansible.
-- A web browser for AWS management. 
+- Docker.
+- Docker Compose.
+- Web browser.
 
+## 9. Deployment and Configuration
 
-Additional software such as Nginx, Prometheus, and Grafana will be installed during the relevant implementation phases.
+The implementation follows a structured deployment process:
 
+1. Prepare the local Linux administration workstation.
+2. Provision the Ubuntu EC2 instance.
+3. Establish secure remote access.
+4. Update and configure the operating system.
+5. Configure Linux users and permissions.
+6. Apply SSH and firewall security.
+7. Deploy administrative Bash scripts.
+8. Configure Ansible automation.
+9. Deploy and manage server services.
+10. Install Node Exporter on the managed server.
+11. Deploy Prometheus, Grafana, and Alertmanager using Docker Compose.
+12. Configure dashboards and alert notifications.
+13. Validate monitoring functionality and document results.
 
-## Requirements Before Installation
+Refer to the project documentation for detailed implementation procedures.
 
+## 10. Monitoring Access and Network Security
 
-Before starting the implementation:
+The monitoring web interfaces are bound to the local workstation's loopback interface.
 
+| Service | Local Port |
+| :--- | :--- |
+| Prometheus | 9090 |
+| Grafana | 3000 |
+| Alertmanager | 9093 |
 
-- Verify access to the AWS Management Console.
-- Confirm the selected AWS region.
-- Verify the EC2 instance configuration.
-- Confirm SSH or Systems Manager connectivity.
-- Ensure the local administration workstation is ready.
-- Confirm sufficient disk space and memory.
-- Review expected AWS costs.
-- Securely store SSH private keys and sensitive credentials. 
+Node Exporter listens on TCP port 9100 on the managed EC2 server.
 
+Its inbound access should be restricted to the trusted monitoring workstation's public IP address using a "/32" source CIDR.
 
-## Installation and Setup
+The monitoring web interfaces should not be exposed directly to the public internet.
 
+## 11. Testing and Verification
 
-The installation process will follow these steps:
+Testing is performed throughout implementation.
 
-- Prepare the local Linux administration workstation.
-- Provision the Ubuntu EC2 instance.
-- Establish secure remote access.
-- Update system packages.
-- Configure Linux users and permissions.
-- Configure SSH and firewall security.
-- Install and configure required administrative tools.
-- Deploy Bash automation scripts.
-- Configure Ansible management.
-- Install and configure monitoring components. 
+| Component | Verification |
+| :--- | :--- |
+| Operating system | "cat /etc/os-release" |
+| Kernel | "uname -r" |
+| Disk capacity | "df -h" |
+| Memory | "free -h" |
+| SSH | "systemctl status ssh" |
+| Firewall | "sudo ufw status verbose" |
+| Nginx | "systemctl status nginx" |
+| Network connectivity | "ping", "curl" |
+| Ansible | "ansible all -m ping" |
+| Docker containers | "docker compose ps" |
+| Prometheus | Prometheus targets and rules pages |
+| Node Exporter | "curl http://localhost:9100/metrics" on the managed server |
+| Grafana | Dashboard and datasource validation |
+| Alertmanager | Configuration and routing validation |
 
-Detailed commands and implementation evidence will be documented in "docs/deployment-guide.md".
+Actual results and implementation evidence are maintained through project documentation and screenshots.
 
-**Status:** In Progress.
+## 12. Documentation
 
-## Configuration
+Detailed technical documentation is available in the "docs/" directory.
 
+### General Server Documentation
 
-Configuration covers the settings required to manage the server and its services.
+Covers:
 
+- Project architecture.
+- Server assessment.
+- Deployment.
+- Security hardening.
+- Troubleshooting.
+- Incident response.
+- Decommissioning.
 
-Examples include:
+### Monitoring Documentation
 
-- SSH daemon configuration.
-- Firewall rules.
-- Linux user and group permissions.
-- Nginx configuration.
-- systemd service configuration.
-- Ansible inventory and playbook variables.
-- Prometheus scrape configuration.
-- Grafana dashboard settings. 
+The "docs/monitoring/" directory contains:
 
+- Monitoring architecture.
+- Deployment guide.
+- Prometheus configuration.
+- Grafana dashboard documentation.
+- Alerting and notification configuration.
+- Monitoring security.
+- Troubleshooting procedures.
 
-Environment-specific values should be stored separately from application and infrastructure code.
+## 13. Lessons Learned
 
+This project provides practical experience in:
 
-Sensitive information such as passwords, private keys, access tokens, and credentials must never be committed to GitHub.
-
-
-Example environment configuration:
-
-```bash
-SERVER_HOST=
-
-SERVER_USER=ubuntu
-
-SSH_KEY_PATH=
-```
-
-These are illustrative placeholders, not real credentials.
-
-
-## Deployment
-
-The infrastructure will be deployed on AWS EC2.
-
-Deployment activities include:
-
-- Provisioning the Linux server.
-- Configuring the operating system.
-- Applying security controls.
-- Deploying administrative scripts.
-- Applying Ansible configurations.
-- Deploying and managing server services.
-- Configuring monitoring and alerting. 
-
-
-The deployment process and verified results will be recorded in the deployment guide.
-
-
-**Status: In Progress.**
-
-
-## Testing and Verification
-
-
-Testing will be performed throughout the implementation to confirm that configurations and services work as expected.
-
-
-Planned verification activities include:
-
-
-|Test| Verification Method|
-|-----|----------------|
-|OS information| "cat /etc/os-release"
-|Kernel version| "uname -r"
-|Disk capacity| "df -h"
-|Memory usage| "free -h"
-|SSH service| "systemctl status ssh"
-|Firewall| "sudo ufw status verbose"
-|Nginx service| "systemctl status nginx"
-|Network connectivity| "ping" and "curl"
-|Ansible connectivity| "ansible all -m ping"
-|Monitoring| Prometheus targets and Grafana dashboards
-
-
-Actual test results and evidence will be added after implementation.
-
-
-## Security Implementation
-
-Security is an important part of this project.
-
-The following measures are planned:
-
-- SSH key-based authentication.
-- Restricted SSH network access.
-- Linux user and privilege management.
-- Least-privilege access controls.
-- UFW firewall configuration.
-- Secure file and directory permissions.
-- Regular security updates.
-- Protection of sensitive configuration data.
-- Monitoring of system logs and authentication activity. 
-
-Security configurations will be tested before being considered complete.
-
-
-## Troubleshooting
-
-This section documents common operational problems, their causes, investigation procedures, and resolutions.
-
-
-Examples of issues to be documented include:
-
-- SSH connection failures.
-- Permission denied errors.
-- Nginx service failures.
-- Disk space exhaustion.
-- High memory utilization.
-- Firewall connectivity problems.
-- Ansible connection failures.
-- Monitoring service failures. 
-
-
-Troubleshooting records will include commands, observations, root causes, corrective actions, and verification results.
-
-
-See "docs/troubleshooting.md" for detailed procedures.
-
-
-## Lessons Learned
-
-
-This section will capture practical knowledge gained during implementation.
-
-
-Expected learning areas include:
-
-
-- Linux server administration and troubleshooting.
-- Understanding Linux processes and system services.
-- SSH security and access control.
-- Resource monitoring and capacity management.
+- Linux server administration.
+- SSH security and access management.
+- Linux processes and system services.
 - Bash scripting and automation.
 - Ansible configuration management.
-- AWS EC2 and EBS administration.
-- Monitoring and incident investigation.
-- Infrastructure cost management.
-- Technical documentation and operational procedures. 
+- AWS EC2 administration.
+- Docker and container orchestration.
+- Prometheus metrics collection.
+- PromQL query development.
+- Grafana dashboard creation.
+- Alertmanager notification routing.
+- Infrastructure monitoring and troubleshooting.
+- Technical documentation.
+- Infrastructure security and cost awareness.
 
-Actual lessons will be updated as the project progresses.
-
-
-##  Future Improvements
+## 14. Future Improvements
 
 Potential enhancements include:
 
 - Multi-server administration using Ansible.
-- Automated backup scheduling.
-- Centralized log management.
-- Advanced monitoring and alerting.
+- Terraform infrastructure provisioning.
 - Automated patch management.
+- Centralized log management.
+- Application-level monitoring.
+- Dedicated remote monitoring infrastructure.
+- External monitoring of the monitoring system.
+- Automated dashboard provisioning.
 - CI/CD integration.
-- Infrastructure provisioning using Terraform.
 - AWS Systems Manager integration.
-- Disaster recovery procedures.
-- Automated compliance and security checks. 
+- Disaster recovery and backup automation.
+- Automated compliance and security checks.
 
-
-## Author
+## 15. Author
 
 Linux System Administrator | DevOps Engineer
+
 GitHub: "tobilee10" (https://github.com/tobilee10)
 
-
-## License
+## 16. License
 
 A license will be selected before public distribution.
 
@@ -348,6 +463,6 @@ See the "LICENSE" file once it is added.
 
 ---
 
-**Project Status: In Progress**
+Project Status: In Progress
 
-This project is being developed as a practical demonstration of Linux System Administration, Cloud Infrastructure Management, Automation, Security, and DevOps Engineering. 
+This project is an ongoing practical demonstration of Linux System Administration, Cloud Infrastructure Management, Automation, Security Engineering, and DevOps practices.
