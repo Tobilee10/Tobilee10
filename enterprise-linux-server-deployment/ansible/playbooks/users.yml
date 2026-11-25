@@ -1,7 +1,0 @@
----
-- name: Configure Linux user management
-  hosts: linux_servers
-  become: true
-  
-  roles:
-    - user_management

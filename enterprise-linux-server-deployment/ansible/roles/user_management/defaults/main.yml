@@ -1,4 +1,0 @@
----
-admin_user: sysadmin
-admin_group: sudo
-admin_shell: /bin/bash

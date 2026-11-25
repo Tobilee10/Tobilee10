@@ -1,8 +1,0 @@
----
-- name: Deploy enterprise Linux administration scripts
-  hosts: linux_servers
-  become: true
-  gather_facts: true
-
-  roles:
-    - enterprise_scripts

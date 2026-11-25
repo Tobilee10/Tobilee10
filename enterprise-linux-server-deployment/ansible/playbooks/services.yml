@@ -1,7 +1,0 @@
----
-- name: Manage Linux system services
-  hosts: linux_servers
-  become: true
-  
-  roles:
-    - service_management
